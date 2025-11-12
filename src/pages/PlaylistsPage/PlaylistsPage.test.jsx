@@ -19,6 +19,9 @@ const playlistsData = {
     total: 2
 };
 
+// Expected count text after loading (matches new UI: "X of Y Playlist(s)")
+const expectedCountText = `${playlistsData.items.length} of ${playlistsData.total} ${playlistsData.total === 1 ? 'Playlist' : 'Playlists'}`;
+
 // Mock token value
 const tokenValue = 'test-token';
 
@@ -81,8 +84,8 @@ describe('PlaylistsPage', () => {
         const heading = await screen.findByRole('heading', { level: 1, name: 'Your Playlists' });
         expect(heading).toBeInTheDocument();
 
-        // should render heading of level 2 showing total playlist count
-        const countHeading = await screen.findByRole('heading', { level: 2, name: `${limit} Playlists` });
+    // should render heading of level 2 showing total playlist count (X of Y)
+    const countHeading = await screen.findByRole('heading', { level: 2, name: expectedCountText });
         expect(countHeading).toBeInTheDocument();
 
         // verify each playlist item rendered, don't check details here as covered in PlaylistItem tests
@@ -150,8 +153,8 @@ describe('PlaylistsPage', () => {
         const heading1 = screen.getByRole('heading', { level: 1, name: `Your Playlists` });
         expect(heading1).toHaveClass('playlists-title', 'page-title');
 
-        // should have heading level 2 with appropriate class name
-        const heading2 = screen.getByRole('heading', { level: 2, name: `${limit} Playlists` });
+    // should have heading level 2 with appropriate class name
+    const heading2 = screen.getByRole('heading', { level: 2, name: expectedCountText });
         expect(heading2).toHaveClass('playlists-count');
 
         // should have ordered list with appropriate class name
