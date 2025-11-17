@@ -20,7 +20,7 @@ export default function TopArtistItem({ artist, index }) {
       <div className="artist-details">
         <div className="artist-details-header">
           <div className="artist-title">
-            {index}. {artist.name}
+            {typeof index === 'number' ? index + 1 : index}. {artist.name}
           </div>
           <div className="artist-genres">
             Genres: {artist.genres.join(', ')}
