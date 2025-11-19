@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { buildTitle } from '../../constants/appMeta.js';
 import DashboardItem from '../../components/DashboardItem/DashboardItem.jsx';
-import '.DashboardPage.css';
+import './DashboardPage.css';
 import { useRequireToken } from '../../hooks/useRequireToken.js';
 import { fetchUserTopArtists } from '../../api/spotify-me.js';
 
