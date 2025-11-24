@@ -81,7 +81,7 @@ export default function DashboardPage() {
 
       {!artistsLoading && !tracksLoading && (
         <div className="dashboard-content">
-          <div className="dashboard-tiles">
+          <div className="card">
             {topArtist ? (
               <SimpleCard
                 imageUrl={topArtist.images?.[0]?.url || ''}
@@ -92,7 +92,8 @@ export default function DashboardPage() {
             ) : (
               <div className="card"><p data-testid="no-artist">No top artist available yet.</p></div>
             )}
-
+          </div>
+          <div className="card">
             {topTrack ? (
               <SimpleCard
                 imageUrl={topTrack.album?.images?.[0]?.url || ''}
