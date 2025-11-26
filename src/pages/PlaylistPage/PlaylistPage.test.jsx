@@ -190,4 +190,46 @@ describe('PlaylistPage', () => {
         const list = screen.getByRole('list');
         expect(list).toHaveClass('playlist-list');
     });
+
+    test('displays not found when playlist data is missing', async () => {
+        // Mock fetchPlaylistById to return no data and no error
+        jest.spyOn(spotifyApi, 'fetchPlaylistById').mockResolvedValue({ data: null, error: null });
+
+        renderPlaylistPage('playlist-missing');
+
+        await waitForLoadingToFinish();
+
+        const alert = await screen.findByRole('alert');
+        expect(alert).toHaveTextContent('Playlist not found.');
+    });
+
+    test('renders empty playlist (no tracks) correctly', async () => {
+        const emptyPlaylist = {
+            id: 'empty1',
+            name: 'Empty Playlist',
+            description: 'No tracks here',
+            images: [{ url: 'https://via.placeholder.com/56' }],
+            owner: { display_name: 'UserEmpty' },
+            external_urls: { spotify: 'https://open.spotify.com/playlist/empty1' },
+            tracks: {
+                items: [],
+                total: 0,
+            },
+        };
+
+        jest.spyOn(spotifyApi, 'fetchPlaylistById').mockResolvedValue({ data: emptyPlaylist, error: null });
+
+        renderPlaylistPage(emptyPlaylist.id);
+
+        await waitForLoadingToFinish();
+
+        // should render headings and cover
+        const heading = await screen.findByRole('heading', { level: 1, name: emptyPlaylist.name });
+        expect(heading).toBeInTheDocument();
+
+        // list exists but contains no track items
+        const list = screen.getByRole('list');
+        expect(list).toHaveClass('playlist-list');
+        expect(screen.queryByTestId(/^track-item-/)).not.toBeInTheDocument();
+    });
 });
